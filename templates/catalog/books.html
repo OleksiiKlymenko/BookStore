@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Store</title>
+</head>
+<body>
+    <h1>Book Store</h1>
+
+    <form method="get">
+        <input type="text" name="search" placeholder="Шукати за назвою або автором..." value="{{ query|default:'' }}">
+        <button type="submit">Find</button>
+    </form>
+
+    <hr>
+
+    <h3>Categories:</h3>
+    <ul>
+        {% for cat in categories %}
+            <li>{{ cat.name }}: {{ cat.books_count }} книг</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h3>Books in stock:</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        {% for book in books %}
+            <div style="border: 1px solid #333; padding: 15px; border-radius: 8px; width: 200px;">
+                <h4>{{ book.title }}</h4>
+                <p>Author: {{ book.author }}</p>
+                <p>Price: <b>{{ book.price }} uah </b></p>
+                <p>Price: {{ book.category }} </p>
+                <p>Stock: {{ book.stock }} </p>
+            </div>
+        {% empty %}
+            <p>No Books for this request</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+        <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px;">
+            <h3>Statistic:</h3>
+            <p>Avarage price: <b>{{ stats.average_price|floatformat:2 }} грн</b></p>
+            <p>Total count in stock: <b>{{ stats.total_stock }} шт.</b></p>
+            <p>The most expensive book: <b>{{ stats.max_price }} грн</b></p>
+        </div>
+    <hr>
+</body>
+</html>
