@@ -1,0 +1,20 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Сторінку не знайдено{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center text-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow p-5 bg-white">
+            <h1 class="display-1 text-danger fw-bold">404</h1>
+            <h3 class="mb-4">Упс! Книгу або сторінку не знайдено</h3>
+            <p class="text-muted mb-4">
+                Схоже, такої книги більше не існує, або посилання за яким ви перейшли — застаріло.
+            </p>
+            <a href="{% url 'home' %}" class="btn btn-primary px-4 py-2">
+                Повернутися на головну
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

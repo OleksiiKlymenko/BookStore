@@ -13,13 +13,31 @@ class Category(models.Model):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
+
+class Author(models.Model):
+    name = models.CharField(max_length=150, verbose_name="Author Name")
+    bio = models.TextField(blank=True, null=True, verbose_name="Biography")
+    birth_date = models.DateField(blank=True, null=True, verbose_name="Birth Date")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Author"
+        verbose_name_plural = "Authors"
+
+
 class Book(models.Model):
     title = models.CharField(max_length=100, verbose_name="Book Title")
-    author = models.CharField(max_length=100, verbose_name="Author")
+    author = models.ForeignKey(
+        Author, on_delete=models.CASCADE, related_name="books", verbose_name="Author"
+    )
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Price")
     description = models.TextField(verbose_name="Description")
     stock = models.IntegerField(verbose_name="Stock")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='books')
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="books"
+    )
 
     def __str__(self):
         return self.title
@@ -27,4 +45,3 @@ class Book(models.Model):
     class Meta:
         verbose_name = "Book"
         verbose_name_plural = "Books"
-

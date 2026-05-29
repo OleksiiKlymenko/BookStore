@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book.title }}</title>
+</head>
+<body>
+    <p><a href="{% url 'catalog:listhome' %}">← Назад до списку</a></p>
+
+    <h1>{{ book.title }}</h1>
+    <p><strong>Автор:</strong> {{ book.author.name }}</p>
+    <p><strong>Категорія:</strong> {{ book.category.name }}</p>
+    <p><strong>Ціна:</strong> {{ book.price }} грн</p>
+    <p><strong>В наявності:</strong> {{ book.stock }} шт.</p>
+
+    <h3>Опис:</h3>
+    <p>{{ book.description|default:"Опис відсутній." }}</p>
+
+    <hr>
+    <p>
+        <a href="{% url 'catalog:book_edit' book.pk %}">Редагувати книгу</a> |
+        <a href="{% url 'catalog:book_delete' book.pk %}" style="color: red;">Видалити книгу</a>
+    </p>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Підтвердження видалення</title>
+</head>
+<body>
+    <h1>Видалення книги</h1>
+    
+    <p>Ви впевнені, що хочете назавжди видалити книгу <strong>"{{ object.title }}"</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" style="background-color: red; color: white; padding: 5px 15px; border: none; cursor: pointer;">
+            Так, видалити
+        </button>
+        <a href="{% url 'catalog:listhome' %}" style="margin-left: 10px;">Ні, скасувати</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if object %}Редагування{% else %}Додавання{% endif %} книги</title>
+</head>
+<body>
+    <p><a href="{% url 'catalog:listhome' %}">← Скасувати та повернутися</a></p>
+
+    <h1>{% if object %}Редагувати книгу: "{{ object.title }}"{% else %}Додати нову книгу{% endif %}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 15px;">
+            {{ form.as_p }}
+        </div>
+
+        <button type="submit" style="padding: 5px 15px;">Зберегти книгу</button>
+    </form>
+</body>
+</html>

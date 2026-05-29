@@ -1,0 +1,99 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Каталог книг{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>Каталог книг</h2>
+    </div>
+</div>
+
+<div class="card card-body bg-white mb-4 shadow-sm">
+    <form method="get" class="row g-3">
+        <div class="col-md-6">
+            <input type="text" name="search" class="form-control" placeholder="Пошук за назвою або описом..." value="{{ search_value }}">
+        </div>
+        <div class="col-md-4">
+            <input type="number" name="price_max" class="form-control" placeholder="Макс. ціна (грн)" value="{{ price_max_value }}">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">Фільтрувати</button>
+        </div>
+    </form>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover table-striped bg-white align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Назва книги</th>
+                <th>Автор</th>
+                <th>Ціна</th>
+                <th>Наявність</th>
+                <th class="text-end">Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in bookslist %}
+            <tr>
+                <td>
+                    <a href="{% url 'catalog:book_detail' book.pk %}" class="text-decoration-none fw-bold text-dark">
+                        {{ book.title }}
+                    </a>
+                </td>
+                <td><span class="badge bg-secondary">{{ book.author.name }}</span></td>
+                <td><strong>{{ book.price }}</strong> грн</td>
+                <td>
+                    {% if book.stock > 5 %}
+                        <span class="text-success">✔ {{ book.stock }} шт.</span>
+                    {% else %}
+                        <span class="text-warning">⚠ Мало ({{ book.stock }} шт.)</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">
+                    <a href="{% url 'catalog:book_edit' book.pk %}" class="btn btn-sm btn-outline-primary me-1">Редагувати</a>
+                    <a href="{% url 'catalog:book_delete' book.pk %}" class="btn btn-sm btn-outline-danger">Видалити</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">Книг за такими критеріями не знайдено.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-line page-link" href="?page={{ page_obj.previous_page_number }}{% if search_value %}&search={{ search_value }}{% endif %}{% if price_max_value %}&price_max={{ price_max_value }}{% endif %}">Попередня</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Попередня</span></li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if search_value %}&search={{ search_value }}{% endif %}{% if price_max_value %}&price_max={{ price_max_value }}{% endif %}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_value %}&search={{ search_value }}{% endif %}{% if price_max_value %}&price_max={{ price_max_value }}{% endif %}">Наступна</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Наступна</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

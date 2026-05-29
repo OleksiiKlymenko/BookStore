@@ -1,5 +1,17 @@
 from django.contrib import admin
-from .models import Book, Category
+from .models import Book, Category, Author
+
+
+class BookInlineForAuthor(admin.TabularInline):
+    model = Book
+    extra = 1
+
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ("name", "birth_date")
+    search_fields = ("name",)
+    inlines = [BookInlineForAuthor]
 
 
 class BookInline(admin.TabularInline):
@@ -9,14 +21,14 @@ class BookInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',)}
+    list_display = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
     inlines = [BookInline]
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'price', 'stock', 'category')
-    list_filter = ('category', 'author')
-    search_fields = ('title', 'author', 'description')
-    list_editable = ('price', 'stock')
+    list_display = ("title", "author", "price", "stock", "category")
+    list_filter = ("category", "author")
+    search_fields = ("title", "author", "description")
+    list_editable = ("price", "stock")
